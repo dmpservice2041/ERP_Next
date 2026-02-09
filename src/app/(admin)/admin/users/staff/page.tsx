@@ -44,11 +44,15 @@ function StaffUsersContent() {
     const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    // Get current user's role ID when modal opens (only first role since we allow one)
+    // Filter users to ONLY show STAFF and ADMIN
+    const filteredUsers = staffUsers.data?.filter(
+        user => user.identity === 'STAFF' || user.identity === 'ADMIN'
+    ) || [];
+
     useEffect(() => {
         if (selectedUser && roles.data) {
-            // Get the first role ID (single role per user)
             if (selectedUser.roles && selectedUser.roles.length > 0) {
+
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const firstRole = selectedUser.roles[0] as any;
                 if (typeof firstRole === 'string') {
@@ -64,6 +68,11 @@ function StaffUsersContent() {
     }, [selectedUser, roles.data]);
 
     const handleManageRoles = (user: UserProfile) => {
+        // HARD BLOCK: Defensive guard against non-staff/admin users
+        if (user.identity !== 'STAFF' && user.identity !== 'ADMIN') {
+            console.warn('Attempted to manage roles for restricted identity:', user.identity);
+            return;
+        }
         setSelectedUser(user);
         setOpened(true);
     };
@@ -77,10 +86,13 @@ function StaffUsersContent() {
     const handleSaveRole = async () => {
         if (!selectedUser || !roles.data) return;
 
+        // Defensive check again
+        if (selectedUser.identity !== 'STAFF' && selectedUser.identity !== 'ADMIN') return;
+
         setIsSaving(true);
 
-        // Get current role ID (only first one)
         let currentRoleId: string | null = null;
+
         if (selectedUser.roles && selectedUser.roles.length > 0) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const firstRole = selectedUser.roles[0] as any;
@@ -93,15 +105,14 @@ function StaffUsersContent() {
         }
 
         try {
-            // If there was a previous role and it's different, remove it
             if (currentRoleId && currentRoleId !== selectedRoleId) {
                 await removeRole.mutateAsync({ userId: selectedUser.id, roleId: currentRoleId });
             }
 
-            // If new role is selected and different from current, add it
             if (selectedRoleId && selectedRoleId !== currentRoleId) {
                 await assignRole.mutateAsync({ userId: selectedUser.id, roleId: selectedRoleId });
             }
+
 
             handleClose();
         } catch (error) {
@@ -117,7 +128,6 @@ function StaffUsersContent() {
         return role.name || role.role?.name || 'Unknown';
     };
 
-    // Prepare Select options
     const roleOptions = roles.data?.map(role => ({
         value: role.id,
         label: role.name,
@@ -125,19 +135,18 @@ function StaffUsersContent() {
 
     return (
         <Container size="xl" py="xl">
-            {/* Header */}
             <Group justify="space-between" mb="xl">
                 <Box>
                     <Title order={2}>User Management</Title>
-                    <Text c="dimmed" size="sm">Manage user accounts and role assignments</Text>
+                    <Text c="dimmed" size="sm">Manage staff and admin accounts</Text>
                 </Box>
             </Group>
 
-            {/* Users Table */}
             <Paper withBorder radius="md" style={{ overflow: 'hidden' }}>
+
                 <Box p="md" style={{ borderBottom: '1px solid var(--mantine-color-gray-2)' }}>
-                    <Text fw={600}>All Users</Text>
-                    <Text size="xs" c="dimmed">{staffUsers.data?.length || 0} users found</Text>
+                    <Text fw={600}>Staff & Admin Users</Text>
+                    <Text size="xs" c="dimmed">{filteredUsers.length} users found</Text>
                 </Box>
 
                 <Table striped highlightOnHover verticalSpacing="md">
@@ -150,7 +159,7 @@ function StaffUsersContent() {
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>
-                        {staffUsers.data?.map((user) => (
+                        {filteredUsers.map((user) => (
                             <Table.Tr key={user.id}>
                                 <Table.Td>
                                     <Group gap="sm">
@@ -172,48 +181,52 @@ function StaffUsersContent() {
                                     <Text size="sm">{user.email}</Text>
                                 </Table.Td>
                                 <Table.Td>
-                                    {user.roles && user.roles.length > 0 ? (
-                                        <Badge
-                                            variant="light"
-                                            color="indigo"
-                                            size="sm"
-                                            radius="sm"
-                                        >
-                                            {getRoleName(user.roles[0])}
-                                        </Badge>
-                                    ) : (
-                                        <Text size="sm" c="dimmed" fs="italic">No role assigned</Text>
-                                    )}
+                                    {(user.identity === 'STAFF' || user.identity === 'ADMIN') ? (
+                                        user.roles && user.roles.length > 0 ? (
+                                            <Badge
+                                                variant="light"
+                                                color="indigo"
+                                                size="sm"
+                                                radius="sm"
+                                            >
+                                                {getRoleName(user.roles[0])}
+                                            </Badge>
+                                        ) : (
+                                            <Text size="sm" c="dimmed" fs="italic">No role assigned</Text>
+                                        )
+                                    ) : null}
                                 </Table.Td>
                                 <Table.Td>
-                                    <Button
-                                        variant="light"
-                                        size="xs"
-                                        radius="md"
-                                        leftSection={<IconSettings size={14} />}
-                                        onClick={() => handleManageRoles(user)}
-                                    >
-                                        Assign Role
-                                    </Button>
+                                    {(user.identity === 'STAFF' || user.identity === 'ADMIN') && (
+                                        <Button
+                                            variant="light"
+                                            size="xs"
+                                            radius="md"
+                                            leftSection={<IconSettings size={14} />}
+                                            onClick={() => handleManageRoles(user)}
+                                        >
+                                            Assign Role
+                                        </Button>
+                                    )}
                                 </Table.Td>
                             </Table.Tr>
                         ))}
                     </Table.Tbody>
                 </Table>
 
-                {staffUsers.data?.length === 0 && (
+                {filteredUsers.length === 0 && (
                     <Box p="xl" ta="center">
                         <ThemeIcon size={48} radius="xl" variant="light" color="gray" mx="auto" mb="md">
                             <IconUser size={24} />
                         </ThemeIcon>
-                        <Text c="dimmed">No users found</Text>
+                        <Text c="dimmed">No staff/admin users found</Text>
                     </Box>
                 )}
 
                 {staffUsers.isLoading && <LoadingOverlay visible={true} />}
             </Paper>
 
-            {/* Assign Role Modal */}
+
             <Modal
                 opened={opened}
                 onClose={handleClose}
@@ -222,7 +235,6 @@ function StaffUsersContent() {
                 radius="lg"
                 padding="xl"
             >
-                {/* Modal Header */}
                 <Group mb="lg" gap="md">
                     <Avatar
                         size={50}
@@ -243,7 +255,6 @@ function StaffUsersContent() {
 
                 <Divider mb="lg" />
 
-                {/* Info Alert */}
                 <Alert
                     icon={<IconInfoCircle size={16} />}
                     color="blue"
@@ -254,8 +265,8 @@ function StaffUsersContent() {
                     Each user can have only one role. Changes take effect when the user logs in again.
                 </Alert>
 
-                {/* Role Selection Dropdown */}
                 <Stack gap="md">
+
                     <Select
                         label="Assign Role"
                         placeholder="Select a role"

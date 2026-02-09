@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
-import { UserProfile } from '@/types/auth'; // Using UserProfile from auth types
+import { UserProfile } from '@/types/auth';
 import { notifications } from '@mantine/notifications';
 
 interface StaffUsersResponse {
@@ -16,7 +16,7 @@ interface StaffUsersResponse {
 
 interface AssignRoleRequest {
     userId: string;
-    roleId: string;  // API expects single roleId string
+    roleId: string;
 }
 
 interface RemoveRoleRequest {
@@ -41,7 +41,7 @@ export function useUserManagement() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return (Array.isArray(data) ? data : (data as any).users || []) as UserProfile[];
         },
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 5 * 60 * 1000,
     });
 
     const assignRoleMutation = useMutation({
@@ -53,7 +53,7 @@ export function useUserManagement() {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ roleId }),  // Send roleId as per API docs
+                body: JSON.stringify({ roleId }),
             });
         },
         onSuccess: () => {

@@ -5,13 +5,13 @@ export interface User {
     name: string;
     email: string;
     identity: Role;
-    permissions?: string[]; // Only for ADMIN/STAFF
+    permissions?: string[];
     avatar?: string;
 }
 
 export interface AcademicSession {
     id: string;
-    name: string; // e.g. "2023-2024"
+    name: string;
     isActive: boolean;
     startDate: string;
     endDate: string;
@@ -33,7 +33,7 @@ export interface ClassEntity {
     id: string;
     name: string;
     departmentId?: string;
-    department?: Department; // Optional relation
+    department?: Department;
     isActive: boolean;
     academicSessionId: string;
     _count?: {
@@ -46,7 +46,7 @@ export interface SectionEntity {
     id: string;
     name: string;
     classId: string;
-    class?: ClassEntity; // Optional relation
+    class?: ClassEntity;
     isActive: boolean;
     order?: number;
     _count?: {

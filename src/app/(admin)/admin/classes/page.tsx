@@ -42,12 +42,12 @@ export default function ClassesPage() {
 function ClassesContent() {
     const { data: user } = useUser();
 
-    // Academic Session Logic
+
     const { academicSessionId, isLoading: isSessionLoading } = useAcademicSessionContext();
     const selectedSessionId = academicSessionId;
     const [departmentFilter, setDepartmentFilter] = useState<string | null>(null);
 
-    // If session is initializing, show loader
+
     if (isSessionLoading) return <LoadingOverlay visible={true} />;
 
     const { classes, createClass, updateClass, deleteClass } = useClasses(selectedSessionId || undefined, departmentFilter || undefined);
@@ -68,8 +68,7 @@ function ClassesContent() {
         },
     });
 
-    // Filter classes
-    // API handles filtering now
+
     const filteredClasses = classes.data;
 
     const handleOpenCreate = () => {
@@ -148,7 +147,7 @@ function ClassesContent() {
 
     const departmentOptions = departments.data?.map(d => ({ value: d.id, label: d.name })) || [];
 
-    // Permissions
+
     const canCreate = hasPermission(user?.permissions || [], 'classes.create');
     const canUpdate = hasPermission(user?.permissions || [], 'classes.update');
     const canDelete = hasPermission(user?.permissions || [], 'classes.delete');
@@ -173,7 +172,7 @@ function ClassesContent() {
                 )}
             </Group>
 
-            {/* Filters */}
+
             <Group mb="md">
                 <Select
                     placeholder="Filter by Department"

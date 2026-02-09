@@ -82,7 +82,7 @@ function AcademicSessionsContent() {
             name: values.name,
             startDate: new Date(values.startDate!).toISOString(),
             endDate: new Date(values.endDate!).toISOString(),
-            isActive: false, // Default to inactive on creation as per API spec
+            isActive: false,
         };
 
         try {
@@ -93,7 +93,7 @@ function AcademicSessionsContent() {
             }
             setIsModalOpen(false);
         } catch (error) {
-            // Error handled in hook
+
         }
     };
 
@@ -116,11 +116,11 @@ function AcademicSessionsContent() {
         try {
             await updateAcademicSession.mutateAsync({ id: session.id, isActive: true });
         } catch (error) {
-            // Error handled in hook
+
         }
     };
 
-    // Permissions
+
     const canCreate = hasPermission(user?.permissions || [], 'academic_sessions.create');
     const canUpdate = hasPermission(user?.permissions || [], 'academic_sessions.update');
     const canDelete = hasPermission(user?.permissions || [], 'academic_sessions.delete');

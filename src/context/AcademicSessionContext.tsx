@@ -14,20 +14,19 @@ interface AcademicSessionContextType {
 const AcademicSessionContext = createContext<AcademicSessionContextType | undefined>(undefined);
 
 export function AcademicSessionProvider({ children }: { children: ReactNode }) {
-    // Initialize with null, will be populated from localStorage or API
+
     const [academicSessionId, setSessionIdState] = useState<string | null>(null);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    // Fetch current active session as fallback
+
     const { data: currentSession, isLoading: isFetchingCurrent } = useQuery({
         queryKey: ['academic-sessions', 'current'],
         queryFn: async () => apiClient<AcademicSession>('academic-sessions/current'),
-        // Only run if we don't have a session ID yet and haven't initialized
-        enabled: !isInitialized && !academicSessionId,
+
     });
 
     useEffect(() => {
-        // 1. Try to load from localStorage on mount
+
         const storedId = localStorage.getItem('academicSessionId');
         if (storedId) {
             setSessionIdState(storedId);
@@ -36,7 +35,7 @@ export function AcademicSessionProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        // 2. If no stored ID, use the fetched current session
+
         if (!isInitialized && currentSession?.id && !academicSessionId) {
             setSessionIdState(currentSession.id);
             localStorage.setItem('academicSessionId', currentSession.id);

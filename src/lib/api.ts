@@ -50,13 +50,13 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
         headers,
     });
 
-    // Handle 401 Unauthorized - Attempt Token Refresh or Logout
+
     if (res.status === 401 && endpoint !== '/auth/refresh' && endpoint !== '/auth/login') {
-        // Token expired. Clear session and redirect to login.
+
         removeAccessToken();
         removeUser();
 
-        // Prevent redirect loop if already on login page or root landing page
+
         if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login') && window.location.pathname !== '/') {
             window.location.href = '/login';
         }
@@ -77,11 +77,10 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
 
     const data = await res.json();
 
-    // Some endpoints might return data wrapped in a 'data' property, while others return it directly.
-    // Check if 'data' property exists and return it, otherwise return the raw response.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
     if ((data as any).data) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         return (data as any).data;
     }
 

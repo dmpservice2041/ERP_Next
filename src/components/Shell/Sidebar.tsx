@@ -18,22 +18,22 @@ interface LinksGroupProps {
     activeLink?: string | null;
 }
 
-// Helper to find the best matching link (longest match)
+
 function findBestMatch(items: NavItem[], pathname: string): string | null {
     let bestMatch: string | null = null;
     let maxLen = 0;
 
     const traverse = (list: NavItem[]) => {
         for (const item of list) {
-            // Check if this item's link is a candidate
+
             if (item.link && (pathname === item.link || pathname.startsWith(item.link + '/'))) {
-                // If it's a better match (longer), keep it
+
                 if (item.link.length > maxLen) {
                     maxLen = item.link.length;
                     bestMatch = item.link;
                 }
             }
-            // Recurse into children
+
             if (item.links) {
                 traverse(item.links);
             }
@@ -48,29 +48,21 @@ function LinksGroup({ item, user, activeLink }: LinksGroupProps) {
     const router = useRouter();
     const pathname = usePathname();
 
-    // Check permission for the item itself
+
     const hasItemPermission = user.identity === 'ADMIN' || !item.permission || hasPermission(user.permissions, item.permission);
     if (!hasItemPermission) return null;
 
-    // Check if any child should be visible
+
     const hasChildItems = item.links && item.links.length > 0;
 
-    // Active state logic:
-    // If it's a leaf node, it's active if its link matches the GLOBALLY determined active link.
-    // This strictly prevents "Student Master" (/students) from being active when "/students/create" is the best match.
+
     const isActive = item.link === activeLink;
 
-    // Determine initial open state:
-    // 1. Explicitly set in config
-    // 2. If it has children and one of them is active (or a descendant is active)
-    // We check if the activeLink is "under" this item's CHILDREN.
+
     const isChildActive = hasChildItems && item.links?.some(child => {
-        // Direct match on child
+
         if (child.link === activeLink) return true;
-        // Or recursive check if child has sub-links (simplified here to just 2 levels for now, but `findBestMatch` handles deep)
-        // Better: Check if `activeLink` starts with child.link? No, `activeLink` IS one of the links.
-        // So we just need to know if `activeLink` belongs to this subtree.
-        // Implementation: Check if `activeLink` is equal to any descendant's link.
+
         const containsActive = (node: NavItem): boolean => {
             if (node.link === activeLink) return true;
             return node.links?.some(containsActive) || false;
@@ -81,7 +73,7 @@ function LinksGroup({ item, user, activeLink }: LinksGroupProps) {
     const initiallyOpened = item.initiallyOpened || isChildActive;
 
     if (hasChildItems) {
-        // Render as expandable group
+
         return (
             <NavLink
                 label={
@@ -108,7 +100,7 @@ function LinksGroup({ item, user, activeLink }: LinksGroupProps) {
         );
     }
 
-    // Render as simple link
+
     return (
         <NavLink
             component="a"
@@ -135,7 +127,7 @@ function LinksGroup({ item, user, activeLink }: LinksGroupProps) {
 export function Sidebar({ user }: SidebarProps) {
     const pathname = usePathname();
 
-    // Calculate the single best matching link for the current path
+
     const activeLink = findBestMatch(MENU_ITEMS, pathname);
 
     return (

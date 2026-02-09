@@ -51,7 +51,7 @@ function SectionsContent({ classId }: { classId: string }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Fallback data from query params
+
     const classNameFallback = searchParams.get('name');
     const departmentNameFallback = searchParams.get('department');
 
@@ -135,7 +135,7 @@ function SectionsContent({ classId }: { classId: string }) {
         }
     };
 
-    // Permissions
+
     const canCreate = hasPermission(user?.permissions || [], 'sections.create');
     const canUpdate = hasPermission(user?.permissions || [], 'sections.update');
     const canDelete = hasPermission(user?.permissions || [], 'sections.delete');
@@ -144,10 +144,7 @@ function SectionsContent({ classId }: { classId: string }) {
         return <LoadingOverlay visible={true} />;
     }
 
-    // Display Strategy:
-    // 1. Use API data if available (classData.name)
-    // 2. Use Query Param fallback if available (classNameFallback)
-    // 3. Use generic fallback with ID
+
     const displayName = classData?.name || classNameFallback || `Class ${classId}`;
     const displaySubtitle = classData ? `Manage sections for ${classData.name}` :
         (classNameFallback ? `Manage sections for ${classNameFallback} ${departmentNameFallback ? `(${departmentNameFallback})` : ''}` : 'Manage sections');

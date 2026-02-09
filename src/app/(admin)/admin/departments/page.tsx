@@ -85,7 +85,7 @@ function DepartmentsContent() {
             }
             setIsModalOpen(false);
         } catch (error) {
-            // Error handled in hook
+
         }
     };
 
@@ -110,11 +110,11 @@ function DepartmentsContent() {
                 isActive: !dept.isActive,
             });
         } catch (error) {
-            // Error managed by mutation onError
+
         }
     };
 
-    // Permissions
+
     const canCreate = hasPermission(user?.permissions || [], 'departments.create');
     const canUpdate = hasPermission(user?.permissions || [], 'departments.update');
     const canDelete = hasPermission(user?.permissions || [], 'departments.delete');

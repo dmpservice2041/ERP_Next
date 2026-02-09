@@ -53,7 +53,6 @@ export function useRoles() {
             return apiClient<RolesResponse>('roles', { headers });
         },
         select: (data) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return (Array.isArray(data) ? data : (data as any).roles || []) as Role[];
         },
         staleTime: 5 * 60 * 1000, // 5 minutes

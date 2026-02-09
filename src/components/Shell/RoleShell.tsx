@@ -46,8 +46,7 @@ export function RoleShell({ children, requiredRole }: RoleShellProps) {
     }
 
     if (!user || user.identity !== requiredRole) {
-        // Option A: Redirect immediately (already handled in useEffect)
-        // Option B: Show Access Denied (better DX for debugging)
+
         return (
             <Center h="100vh" style={{ flexDirection: 'column' }}>
                 <Text c="red" fw={700} size="xl">Access Denied</Text>
