@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api';
+import { apiClient, getUser } from '@/lib/api';
 import { SectionEntity } from '@/types';
 import { notifications } from '@mantine/notifications';
 
@@ -19,6 +19,7 @@ interface UpdateSectionRequest {
 
 export function useSections(classId?: string) {
     const queryClient = useQueryClient();
+    const user = getUser();
 
     const sections = useQuery({
         queryKey: ['sections', classId],
@@ -27,7 +28,7 @@ export function useSections(classId?: string) {
             return apiClient<SectionEntity[]>(`classes/${classId}/sections`);
         },
         select: (data) => data || [],
-        enabled: !!classId,
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token') && !!classId,
     });
 
     const createSection = useMutation({

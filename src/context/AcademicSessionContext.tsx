@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api';
+import { apiClient, getUser } from '@/lib/api';
 import { AcademicSession } from '@/types';
 
 interface AcademicSessionContextType {
@@ -19,10 +19,12 @@ export function AcademicSessionProvider({ children }: { children: ReactNode }) {
     const [isInitialized, setIsInitialized] = useState(false);
 
 
+    const user = getUser();
+
     const { data: currentSession, isLoading: isFetchingCurrent } = useQuery({
         queryKey: ['academic-sessions', 'current'],
         queryFn: async () => apiClient<AcademicSession>('academic-sessions/current'),
-
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
     });
 
     useEffect(() => {

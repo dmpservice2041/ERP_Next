@@ -8,10 +8,12 @@ export function useUser() {
     return useQuery({
         queryKey: ['user'],
         queryFn: () => apiClient<UserProfile>(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`),
-        select: (data: UserProfile) => {
-            const name = data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : (data.email || 'Unknown User');
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
+        select: (data: any) => {
+            const profile = data as UserProfile;
+            const name = profile.firstName && profile.lastName ? `${profile.firstName} ${profile.lastName}` : (profile.email || 'Unknown User');
             return {
-                ...data,
+                ...profile,
                 name,
             } as unknown as User;
         },
@@ -19,7 +21,6 @@ export function useUser() {
             const user = getUser();
             return user ? (user as UserProfile) : undefined;
         },
-        retry: false,
-        staleTime: Infinity, // Rely on localStorage for now since API is 404
+        retry: 1,
     });
 }

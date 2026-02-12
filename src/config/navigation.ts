@@ -8,6 +8,8 @@ import {
     IconCalendarEvent,
     IconBooks,
     IconChalkboard,
+    IconDatabase,
+    IconForms,
 } from '@tabler/icons-react';
 
 export interface NavItem {
@@ -116,6 +118,24 @@ export const MENU_ITEMS: NavItem[] = [
                 link: '/admin/roles',
                 icon: IconShieldLock,
                 permission: 'roles.read',
+            },
+        ],
+    },
+    {
+        label: 'System Configuration',
+        icon: IconSettings,
+        links: [
+            {
+                label: 'Master Data',
+                link: '/master-data',
+                icon: IconDatabase,
+                permission: 'master_data.read',
+            },
+            {
+                label: 'Dynamic Fields',
+                link: '/dynamic-fields',
+                icon: IconForms,
+                permission: 'dynamic_fields.read',
             },
         ],
     },

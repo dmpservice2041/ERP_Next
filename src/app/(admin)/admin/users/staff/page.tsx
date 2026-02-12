@@ -137,8 +137,8 @@ function StaffUsersContent() {
         <Container size="xl" py="xl">
             <Group justify="space-between" mb="xl">
                 <Box>
-                    <Title order={2}>User Management</Title>
-                    <Text c="dimmed" size="sm">Manage staff and admin accounts</Text>
+                    <Title order={2}>Staff & Admin Role Management</Title>
+                    <Text c="dimmed" size="sm">Manage roles and permissions for staff and administrator accounts</Text>
                 </Box>
             </Group>
 

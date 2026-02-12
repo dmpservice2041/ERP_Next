@@ -15,7 +15,6 @@ export interface UserProfile {
     lastName: string;
     identity: Role;
     isActive: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     roles: any[];
     permissions: string[];
 }

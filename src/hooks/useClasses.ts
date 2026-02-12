@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api';
+import { apiClient, getUser } from '@/lib/api';
 import { ClassEntity } from '@/types';
 import { notifications } from '@mantine/notifications';
 
@@ -20,6 +20,7 @@ interface UpdateClassRequest {
 
 export function useClasses(academicSessionId?: string, departmentId?: string) {
     const queryClient = useQueryClient();
+    const user = getUser();
 
     const classes = useQuery({
         queryKey: ['classes', academicSessionId, departmentId],
@@ -31,7 +32,7 @@ export function useClasses(academicSessionId?: string, departmentId?: string) {
             return apiClient<ClassEntity[]>(`classes?${params.toString()}`);
         },
         select: (data) => data || [],
-        enabled: !!academicSessionId, // Only fetch if academicSessionId is available
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token') && !!academicSessionId, // Only fetch if authenticated and academicSessionId is available
     });
 
     const createClass = useMutation({
@@ -116,9 +117,12 @@ export function useClasses(academicSessionId?: string, departmentId?: string) {
 }
 
 export function useClass(id: string) {
+    const user = getUser();
+    const institutionId = user?.institutionId;
+
     return useQuery({
         queryKey: ['classes', id],
         queryFn: async () => apiClient<ClassEntity>(`classes/${id}`),
-        enabled: !!id,
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token') && !!id,
     });
 }

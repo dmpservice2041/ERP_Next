@@ -64,6 +64,10 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
         throw new Error('Session expired. Please login again.');
     }
 
+    if (res.status === 204) {
+        return [] as unknown as T;
+    }
+
     if (!res.ok) {
         let errorMessage = `API Error: ${res.statusText}`;
         try {
@@ -75,12 +79,20 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
         throw new Error(errorMessage);
     }
 
-    const data = await res.json();
+    // Handle empty response bodies for 200 OK (some APIs do this)
+    const text = await res.text();
+    if (!text) {
+        return [] as unknown as T;
+    }
 
-
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (e) {
+        throw new Error('Failed to parse response from server');
+    }
 
     if ((data as any).data) {
-
         return (data as any).data;
     }
 

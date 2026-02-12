@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api';
+import { apiClient, getUser } from '@/lib/api';
 import { Department } from '@/types';
 import { notifications } from '@mantine/notifications';
 
@@ -21,10 +21,10 @@ interface UpdateDepartmentRequest {
 
 export function useDepartments() {
     const queryClient = useQueryClient();
-
     const departments = useQuery({
         queryKey: ['departments'],
         queryFn: async () => apiClient<Department[]>('departments'),
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
         select: (data) => data || []
     });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { apiClient, setAccessToken, removeAccessToken, setUser, removeUser } from '@/lib/api';
+import { apiClient, setAccessToken, removeAccessToken, setUser, removeUser, getUser } from '@/lib/api';
 import { LoginRequest, LoginResponse, Session, PasswordResetRequest, PasswordResetConfirmRequest, ChangePasswordRequest } from '@/types/auth'; // Removed unused imports if any
 import { useRouter } from 'next/navigation';
 
@@ -47,6 +47,7 @@ export function useAuth() {
         queryKey: ['sessions'],
         queryFn: () => apiClient<{ sessions: Session[] }>('auth/sessions'),
         enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
+        retry: false,
     });
 
     const requestPasswordResetMutation = useMutation({

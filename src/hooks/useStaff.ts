@@ -1,24 +1,30 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api';
+import { apiClient, getUser } from '@/lib/api';
 import { notifications } from '@mantine/notifications';
 import { Staff, CreateStaffRequest } from '@/types';
 
 export function useStaffList() {
+    const user = getUser();
+    const institutionId = user?.institutionId;
+
     return useQuery({
         queryKey: ['staff'],
         queryFn: () => apiClient<{ staff: Staff[] }>('staff'),
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
         select: (data) => data.staff,
     });
 }
 
-export function useStaff(id: string) {
+export function useStaff(id?: string) {
+    const user = getUser();
+
     return useQuery({
         queryKey: ['staff', id],
         queryFn: () => apiClient<{ staff: Staff }>(`staff/${id}`),
         select: (data) => data.staff,
-        enabled: !!id,
+        enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token') && !!id,
     });
 }
 
