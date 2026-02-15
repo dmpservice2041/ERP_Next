@@ -175,7 +175,7 @@ function DepartmentsContent() {
                                         color={dept.isActive ? 'green' : 'red'}
                                         variant="filled"
                                         size="sm"
-                                        //@ts-ignore
+                                        
                                         style={{ cursor: canUpdate ? 'pointer' : 'default' }}
                                         onClick={() => canUpdate && handleToggleStatus(dept)}
                                     >

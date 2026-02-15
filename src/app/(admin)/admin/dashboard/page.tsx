@@ -112,7 +112,7 @@ export default function AdminDashboard() {
 
     return (
         <Container size="xl" py="xl">
-            {/* Welcome Section */}
+            { }
             <Paper
                 p="xl"
                 radius="md"
@@ -146,14 +146,14 @@ export default function AdminDashboard() {
                 </Group>
             </Paper>
 
-            {/* Stats Grid */}
+            { }
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg" mb="xl">
                 {stats.map((stat) => (
                     <StatCard key={stat.title} {...stat} />
                 ))}
             </SimpleGrid>
 
-            {/* Quick Actions */}
+            { }
             <Title order={4} mb="md">Quick Actions</Title>
             <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
                 <Paper

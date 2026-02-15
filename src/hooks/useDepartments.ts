@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { Department } from '@/types';
 import { notifications } from '@mantine/notifications';
 

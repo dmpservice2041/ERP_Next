@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { notifications } from '@mantine/notifications';
 
 export interface Permission {
@@ -41,7 +41,6 @@ interface UpdateRoleRequest {
 
 export function useRoles() {
     const queryClient = useQueryClient();
-    const user = getUser();
 
     const rolesQuery = useQuery({
         queryKey: ['roles'],
@@ -57,7 +56,7 @@ export function useRoles() {
         select: (data) => {
             return (Array.isArray(data) ? data : (data as any).roles || []) as Role[];
         },
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 5 * 60 * 1000, 
     });
 
     const permissionsQuery = useQuery({
@@ -72,10 +71,10 @@ export function useRoles() {
         },
         enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
         select: (data) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            
             return (Array.isArray(data) ? data : (data as any).permissions || []) as Permission[];
         },
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        staleTime: 5 * 60 * 1000, 
     });
 
     const createRoleMutation = useMutation({

@@ -22,7 +22,7 @@ export const studentService = {
         return apiClient<StudentFull>(`${BASE_URL}/${id}`);
     },
 
-    // Search/Filter (if needed later)
+    
     getAll: async (params?: Record<string, string>): Promise<StudentFull[]> => {
         return apiClient<StudentFull[]>(BASE_URL, { params });
     }

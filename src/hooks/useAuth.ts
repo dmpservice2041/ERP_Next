@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { apiClient, setAccessToken, removeAccessToken, setUser, removeUser, getUser } from '@/lib/api';
-import { LoginRequest, LoginResponse, Session, PasswordResetRequest, PasswordResetConfirmRequest, ChangePasswordRequest } from '@/types/auth'; // Removed unused imports if any
+import { apiClient, setAccessToken, removeAccessToken } from '@/lib/api';
+import { LoginRequest, LoginResponse, Session, PasswordResetRequest, PasswordResetConfirmRequest, ChangePasswordRequest } from '@/types/auth'; 
 import { useRouter } from 'next/navigation';
 
 export function useAuth() {
@@ -17,9 +17,8 @@ export function useAuth() {
             }),
         onSuccess: (data) => {
             setAccessToken(data.accessToken);
-            setUser(data.user);
             queryClient.setQueryData(['user'], data.user);
-            // Redirect handled by component for now to support role-based logic
+            
         },
     });
 
@@ -27,7 +26,6 @@ export function useAuth() {
         mutationFn: () => apiClient('auth/logout', { method: 'POST' }),
         onSuccess: () => {
             removeAccessToken();
-            removeUser();
             queryClient.setQueryData(['user'], null);
             router.push('/login');
         },
@@ -37,7 +35,6 @@ export function useAuth() {
         mutationFn: () => apiClient('auth/logout-all', { method: 'POST' }),
         onSuccess: () => {
             removeAccessToken();
-            removeUser();
             queryClient.setQueryData(['user'], null);
             router.push('/login');
         },

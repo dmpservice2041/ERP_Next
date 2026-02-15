@@ -1,13 +1,9 @@
 'use client';
 
-/**
- * Hook for managing staff and admin users' roles.
- * Note: STUDENT and PARENT identities do NOT use RBAC/roles.
- * This hook should only be used in contexts where staff/admin accounts are managed.
- */
+ 
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { UserProfile } from '@/types/auth';
 import { notifications } from '@mantine/notifications';
 
@@ -32,7 +28,6 @@ interface RemoveRoleRequest {
 
 export function useUserManagement() {
     const queryClient = useQueryClient();
-    const user = getUser();
 
     const getStaffUsers = useQuery({
         queryKey: ['users'],
@@ -46,7 +41,7 @@ export function useUserManagement() {
         },
         enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
         select: (data) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            
             return (Array.isArray(data) ? data : (data as any).users || []) as UserProfile[];
         },
         staleTime: 5 * 60 * 1000,

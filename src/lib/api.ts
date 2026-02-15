@@ -8,18 +8,7 @@ export const getAccessToken = () => typeof window !== 'undefined' ? localStorage
 export const setAccessToken = (token: string) => localStorage.setItem(TOKEN_KEY, token);
 export const removeAccessToken = () => localStorage.removeItem(TOKEN_KEY);
 
-const USER_KEY = 'erp_user_profile';
-export const getUser = () => {
-    if (typeof window === 'undefined') return null;
-    const item = localStorage.getItem(USER_KEY);
-    try {
-        return item ? JSON.parse(item) : null;
-    } catch {
-        return null;
-    }
-};
-export const setUser = (user: unknown) => localStorage.setItem(USER_KEY, JSON.stringify(user));
-export const removeUser = () => localStorage.removeItem(USER_KEY);
+
 
 export interface ApiOptions extends RequestInit {
     params?: Record<string, string>;
@@ -54,7 +43,7 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
     if (res.status === 401 && endpoint !== '/auth/refresh' && endpoint !== '/auth/login') {
 
         removeAccessToken();
-        removeUser();
+        
 
 
         if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login') && window.location.pathname !== '/') {
@@ -74,12 +63,12 @@ export async function apiClient<T>(endpoint: string, options: ApiOptions = {}): 
             const errorData = await res.json();
             errorMessage = errorData.message || errorData.error || errorMessage;
         } catch {
-            // No JSON body
+            
         }
         throw new Error(errorMessage);
     }
 
-    // Handle empty response bodies for 200 OK (some APIs do this)
+    
     const text = await res.text();
     if (!text) {
         return [] as unknown as T;

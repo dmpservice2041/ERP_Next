@@ -106,7 +106,7 @@ function SectionsContent({ classId }: { classId: string }) {
             }
             setIsModalOpen(false);
         } catch (error) {
-            // Error managed by hook
+            
         }
     };
 
@@ -131,7 +131,7 @@ function SectionsContent({ classId }: { classId: string }) {
                 isActive: !section.isActive,
             });
         } catch (error) {
-            // Error managed by hook
+            
         }
     };
 

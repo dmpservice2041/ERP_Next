@@ -17,12 +17,12 @@ export default function PermissionGuard({ children, requiredPermission }: Permis
     const router = useRouter();
 
     if (isLoading) {
-        return null; // Or a loading spinner
+        return null; 
     }
 
     if (!user) {
-        // Optionally redirect to login, but usually this is handled by middleware or parent guards
-        // For now, render nothing or login prompt
+        
+        
         return null;
     }
 

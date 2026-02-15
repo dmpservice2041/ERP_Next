@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { AcademicSession } from '@/types';
 
 interface AcademicSessionContextType {
@@ -19,8 +19,6 @@ export function AcademicSessionProvider({ children }: { children: ReactNode }) {
     const [isInitialized, setIsInitialized] = useState(false);
 
 
-    const user = getUser();
-
     const { data: currentSession, isLoading: isFetchingCurrent } = useQuery({
         queryKey: ['academic-sessions', 'current'],
         queryFn: async () => apiClient<AcademicSession>('academic-sessions/current'),
@@ -28,26 +26,20 @@ export function AcademicSessionProvider({ children }: { children: ReactNode }) {
     });
 
     useEffect(() => {
-
-        const storedId = localStorage.getItem('academicSessionId');
-        if (storedId) {
-            setSessionIdState(storedId);
-            setIsInitialized(true);
-        }
+        
     }, []);
 
     useEffect(() => {
-
         if (!isInitialized && currentSession?.id && !academicSessionId) {
             setSessionIdState(currentSession.id);
-            localStorage.setItem('academicSessionId', currentSession.id);
+            
             setIsInitialized(true);
         }
     }, [currentSession, isInitialized, academicSessionId]);
 
     const setAcademicSessionId = (id: string) => {
         setSessionIdState(id);
-        localStorage.setItem('academicSessionId', id);
+        
     };
 
     const value = {

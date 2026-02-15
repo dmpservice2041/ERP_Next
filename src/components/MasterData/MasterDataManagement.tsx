@@ -31,12 +31,12 @@ export function MasterDataManagement() {
     const [modalOpen, setModalOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<MasterDataItem | null>(null);
 
-    // Fetch available types on mount
+    
     useEffect(() => {
         loadTypes();
     }, []);
 
-    // Fetch items when type changes
+    
     useEffect(() => {
         if (activeType) {
             loadItems(activeType);
@@ -100,7 +100,7 @@ export function MasterDataManagement() {
                     fieldName: values.fieldName,
                     isVisible: values.isVisible,
                     order: Number(values.order),
-                    // Type is typically immutable or passed in URL
+                    
                 });
                 notifications.show({ title: 'Success', message: 'Item updated successfully', color: 'green' });
             } else {

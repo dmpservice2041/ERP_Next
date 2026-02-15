@@ -1,12 +1,11 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { notifications } from '@mantine/notifications';
 import { Parent, RegisterParentRequest } from '@/types';
 
 export function useParent(id?: string) {
-    const user = getUser();
 
     return useQuery({
         queryKey: ['parent', id],

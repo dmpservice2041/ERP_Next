@@ -19,7 +19,7 @@ export function RoleShell({ children, requiredRole }: RoleShellProps) {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        
         setMounted(true);
     }, []);
 
@@ -35,8 +35,8 @@ export function RoleShell({ children, requiredRole }: RoleShellProps) {
         }
     }, [user, isLoading, requiredRole, router, mounted]);
 
-    // Force loading state during SSR and initial client mount to prevent hydration mismatch
-    // because useUser() reads from localStorage which is available immediately on client but not server.
+    
+    
     if (!mounted || isLoading) {
         return (
             <Center h="100vh">

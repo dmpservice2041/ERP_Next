@@ -44,7 +44,7 @@ function StaffUsersContent() {
     const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    // Filter users to ONLY show STAFF and ADMIN
+    
     const filteredUsers = staffUsers.data?.filter(
         user => user.identity === 'STAFF' || user.identity === 'ADMIN'
     ) || [];
@@ -53,7 +53,7 @@ function StaffUsersContent() {
         if (selectedUser && roles.data) {
             if (selectedUser.roles && selectedUser.roles.length > 0) {
 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                
                 const firstRole = selectedUser.roles[0] as any;
                 if (typeof firstRole === 'string') {
                     const found = roles.data.find(role => role.name === firstRole);
@@ -68,7 +68,7 @@ function StaffUsersContent() {
     }, [selectedUser, roles.data]);
 
     const handleManageRoles = (user: UserProfile) => {
-        // HARD BLOCK: Defensive guard against non-staff/admin users
+        
         if (user.identity !== 'STAFF' && user.identity !== 'ADMIN') {
             console.warn('Attempted to manage roles for restricted identity:', user.identity);
             return;
@@ -86,7 +86,7 @@ function StaffUsersContent() {
     const handleSaveRole = async () => {
         if (!selectedUser || !roles.data) return;
 
-        // Defensive check again
+        
         if (selectedUser.identity !== 'STAFF' && selectedUser.identity !== 'ADMIN') return;
 
         setIsSaving(true);
@@ -94,7 +94,7 @@ function StaffUsersContent() {
         let currentRoleId: string | null = null;
 
         if (selectedUser.roles && selectedUser.roles.length > 0) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            
             const firstRole = selectedUser.roles[0] as any;
             if (typeof firstRole === 'string') {
                 const found = roles.data.find(role => role.name === firstRole);

@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Box h="100vh" bg="gray.0" style={{ overflow: 'hidden' }}>
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing={0} h="100%">
-        {/* Left Side: Branding & Info */}
+        { }
         <Center
           bg="blue.6"
           p="xl"
@@ -48,7 +48,7 @@ export default function Home() {
           </Container>
         </Center>
 
-        {/* Right Side: Login Form */}
+        { }
         <Center p="xl">
           <Container size={420} w="100%">
             <Box mb={40} hiddenFrom="md" ta="center">

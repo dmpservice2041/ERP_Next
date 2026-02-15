@@ -61,7 +61,7 @@ export function Header({ opened, toggle, user }: HeaderProps) {
             <Group gap="md">
                 <AcademicSessionSelect />
 
-                {/* Notification Bell */}
+                { }
                 <Tooltip label="Notifications" position="bottom">
                     <Indicator inline processing color="red" size={8} offset={4}>
                         <ActionIcon
@@ -75,7 +75,7 @@ export function Header({ opened, toggle, user }: HeaderProps) {
                     </Indicator>
                 </Tooltip>
 
-                {/* User Menu */}
+                { }
                 <Menu shadow="lg" width={220} position="bottom-end" withArrow>
                     <Menu.Target>
                         <UnstyledButton

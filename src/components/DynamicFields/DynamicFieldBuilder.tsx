@@ -109,9 +109,9 @@ export function DynamicFieldBuilder() {
             await dynamicFieldService.save({
                 ...values,
                 entityType,
-                // Ensure ID is preserved for updates
-                fieldId: editingField?.fieldId, // or id
-                masterType: undefined, // Force clear master link
+                
+                fieldId: editingField?.fieldId, 
+                masterType: undefined, 
             } as DynamicFieldConfig);
 
             notifications.show({ title: 'Success', message: 'Field definition saved', color: 'green' });
@@ -221,7 +221,7 @@ export function DynamicFieldBuilder() {
                             onChange={(event) => {
                                 form.getInputProps('displayName').onChange(event);
                                 if (!editingField) {
-                                    // Auto-generate name
+                                    
                                     const val = event.currentTarget.value.toLowerCase().replace(/[^a-z0-9]/g, '_');
                                     form.setFieldValue('name', val);
                                 }
@@ -287,7 +287,7 @@ export function DynamicFieldBuilder() {
                                 min={1}
                                 {...form.getInputProps('maxLength')}
                             />
-                            <div /> {/* Spacer */}
+                            <div /> { }
                         </Group>
 
                         <Group>

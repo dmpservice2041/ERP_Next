@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { notifications } from '@mantine/notifications';
 import { Student, CreateStudentRequest, UpdateStudentRequest } from '@/types';
 
@@ -12,8 +12,6 @@ export function useStudents(filters?: {
     sectionId?: string;
 }) {
     const queryClient = useQueryClient();
-    const user = getUser();
-    const institutionId = user?.institutionId;
 
     const students = useQuery({
         queryKey: ['students', filters],
@@ -83,7 +81,6 @@ export function useStudents(filters?: {
 
 export function useStudent(id: string) {
     const queryClient = useQueryClient();
-    const user = getUser();
 
     const student = useQuery({
         queryKey: ['student', id],

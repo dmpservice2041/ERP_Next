@@ -1,55 +1,55 @@
 import { Student as BaseStudent, Department, AcademicSession, ClassEntity, SectionEntity } from './index';
 
-// ==========================================
-// 1. FIXED CORE FIELDS
-// ==========================================
-// ==========================================
-// 1. FIXED CORE FIELDS
-// ==========================================
+
+
+
+
+
+
 export interface StudentCore {
-    // Identity
+    
     enrollmentNo: string;
-    rollNo?: string;     // Added
+    rollNo?: string;     
     firstName: string;
     middleName?: string;
     lastName: string;
 
-    // Academic Context
-    academicSessionId: string; // Locked from context
+    
+    academicSessionId: string; 
     departmentId: string;
     classId: string;
     sectionId: string;
-    admissionDate: string; // ISO Date
-    joiningDate: string;   // ISO Date
+    admissionDate: string; 
+    joiningDate: string;   
 
-    // Personal
-    dob: string;           // ISO Date
+    
+    dob: string;           
     gender: 'MALE' | 'FEMALE' | 'OTHER';
     email?: string;
     mobile: string;
     emergencyPhone?: string;
 
-    // Parent / Guardian
+    
     fatherName?: string;
     fatherMobile?: string;
     motherName?: string;
     motherMobile?: string;
 
-    // Present Address
+    
     currentAddress?: string;
     currentCity?: string;
     currentState?: string;
     currentCountry?: string;
     currentPincode?: string;
 
-    // Media
+    
     photoUrl?: string;
     signatureUrl?: string;
 }
 
-// ==========================================
-// 2. MASTER DATA
-// ==========================================
+
+
+
 export type MasterDataType =
     | 'RELIGION'
     | 'BLOOD_GROUP'
@@ -64,18 +64,18 @@ export type MasterDataType =
     | 'STATE'
     | 'COUNTRY'
     | 'NATIONALITY'
-    | string; // Allow extensibility
+    | string; 
 
 export interface MasterDataItem {
     id: string;
-    masterType: MasterDataType; // Renamed from type
-    fieldName: string;          // Renamed from label/value
-    isVisible: boolean;         // Renamed from isActive
-    order?: number;             // Optional, not in specific spec but good to keep if backend supports
+    masterType: MasterDataType; 
+    fieldName: string;          
+    isVisible: boolean;         
+    order?: number;             
     parentId?: string;
 }
 
-// Map of Master Type -> Selected ID
+
 export interface StudentMasterFields {
     religionId?: string;
     bloodGroupId?: string;
@@ -84,9 +84,9 @@ export interface StudentMasterFields {
     [key: string]: string | undefined;
 }
 
-// ==========================================
-// 3. DYNAMIC FIELDS
-// ==========================================
+
+
+
 export type DynamicControlType =
     | 'TEXT'
     | 'NUMBER'
@@ -104,22 +104,22 @@ export type DynamicDataType =
     | 'DATE';
 
 export interface DynamicFieldConfig {
-    fieldId?: string;    // API returns fieldId. Optional for creation.
-    id?: string;         // Alias for frontend compatibility if needed
+    fieldId?: string;    
+    id?: string;         
     entityType: 'STUDENT' | 'STAFF';
-    name: string;        // Database key (e.g., "father_name")
-    displayName: string; // Renamed from label UI Label
+    name: string;        
+    displayName: string; 
     controlType: DynamicControlType;
     dataType: DynamicDataType;
-    isRequired: boolean; // Renamed from required
-    isVisible: boolean;  // Renamed from isActive
-    priority: number;    // Renamed from order
+    isRequired: boolean; 
+    isVisible: boolean;  
+    priority: number;    
     placeholder?: string;
-    maxLength?: number;  // NEW
+    maxLength?: number;  
 
-    // For Dropdowns
-    masterType?: MasterDataType; // Link to Master Data
-    options?: string[]; // Hardcoded options (fallback)
+    
+    masterType?: MasterDataType; 
+    options?: string[]; 
 }
 
 export interface DynamicFieldValue {
@@ -127,72 +127,72 @@ export interface DynamicFieldValue {
     value: string | number | boolean | null;
 }
 
-// ==========================================
-// AGGREGATE PAYLOADS
-// ==========================================
 
-// What the UI sends to POST /api/students
-// What the UI sends to POST /api/students
+
+
+
+
+
 export interface CreateStudentPayload {
-    // Context
+    
     academicSessionId: string;
 
-    // Identity
+    
     firstName: string;
     middleName?: string;
     lastName: string;
     enrollmentNo: string;
     rollNo?: string;
 
-    // Hierarchy
+    
     departmentId: string;
     classId: string;
     sectionId: string;
     admissionSessionId?: string;
 
-    // Contact
-    phone?: string;       // Replaces mobile in payload
+    
+    phone?: string;       
     email?: string;
     emergencyPhone?: string;
 
-    // Personal
-    dateOfBirth?: string; // Replaces dob in payload
+    
+    dateOfBirth?: string; 
     gender?: string;
     joiningDate?: string;
-    admissionDate?: string; // Kept as it is often needed
+    admissionDate?: string; 
 
-    // Images
+    
     photoUrl?: string;
     signatureUrl?: string;
-    password?: string; // Optional for login creation
+    password?: string; 
 
-    // Master Data FKs (Flat)
+    
     religionId?: string;
     bloodGroupId?: string;
     nationalityId?: string;
-    categoryId?: string; // Replaces 'CAST_CATEGORY' map
+    categoryId?: string; 
     houseId?: string;
 
-    // Parent
+    
     fatherName?: string;
     fatherMobile?: string;
     motherName?: string;
     motherMobile?: string;
 
-    // Address
+    
     presentAddress?: string;
     presentCity?: string;
     presentState?: string;
     presentCountry?: string;
     presentPincode?: string;
 
-    // Dynamic
+    
     dynamicFields?: { fieldId: string; value: any }[];
 }
 
-// Full Student Object (Response)
+
 export interface StudentFull extends BaseStudent {
     core: StudentCore;
-    masterData: Record<string, MasterDataItem>; // Keyed by type
-    dynamicValues: Record<string, any>; // Keyed by field name
+    masterData: Record<string, MasterDataItem>; 
+    dynamicValues: Record<string, any>; 
 }

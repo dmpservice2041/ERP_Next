@@ -74,7 +74,7 @@ function ClassesContent() {
     const handleOpenCreate = () => {
         setEditingId(null);
         form.reset();
-        // If there is a filter active, pre-select it?
+        
         if (departmentFilter) form.setFieldValue('departmentId', departmentFilter);
         setIsModalOpen(true);
     };
@@ -116,7 +116,7 @@ function ClassesContent() {
             }
             setIsModalOpen(false);
         } catch (error) {
-            // Error managed by hook
+            
         }
     };
 
@@ -141,7 +141,7 @@ function ClassesContent() {
                 isActive: !cls.isActive,
             });
         } catch (error) {
-            // Error managed by hook
+            
         }
     };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { AcademicSession } from '@/types';
 import { notifications } from '@mantine/notifications';
 
@@ -22,14 +22,13 @@ interface UpdateAcademicSessionRequest {
 
 export function useAcademicSession() {
     const queryClient = useQueryClient();
-    const user = getUser();
 
     const getAcademicSessions = useQuery({
         queryKey: ['academic-sessions'],
         queryFn: async () => apiClient<AcademicSession[]>('academic-sessions'),
         enabled: typeof window !== 'undefined' && !!localStorage.getItem('erp_access_token'),
         select: (data) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            
             const list = Array.isArray(data) ? data : (data as any).data || (data as any).academicSessions || [];
             return list as AcademicSession[];
         }

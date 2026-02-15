@@ -85,7 +85,7 @@ function RolesContent() {
         }
     };
 
-    // Group permissions by module
+    
     const groupedPermissions = permissions.data?.reduce((acc, perm) => {
         if (!acc[perm.module]) acc[perm.module] = [];
         acc[perm.module].push(perm);

@@ -19,7 +19,7 @@ function AddStudentContent() {
     const router = useRouter();
 
     const handleSubmit = async (values: any) => {
-        // values is CreateStudentPayload
+        
         try {
             await studentService.create(values);
             notifications.show({ title: 'Success', message: 'Student created successfully', color: 'green' });

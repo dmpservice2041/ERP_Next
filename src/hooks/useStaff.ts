@@ -1,13 +1,11 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, getUser } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 import { notifications } from '@mantine/notifications';
 import { Staff, CreateStaffRequest } from '@/types';
 
 export function useStaffList() {
-    const user = getUser();
-    const institutionId = user?.institutionId;
 
     return useQuery({
         queryKey: ['staff'],
@@ -18,7 +16,6 @@ export function useStaffList() {
 }
 
 export function useStaff(id?: string) {
-    const user = getUser();
 
     return useQuery({
         queryKey: ['staff', id],

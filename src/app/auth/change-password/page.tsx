@@ -104,7 +104,7 @@ export default function ChangePasswordPage() {
                         border: '1px solid var(--mantine-color-gray-2)',
                     }}
                 >
-                    {/* Header */}
+                    { }
                     <Center mb="lg">
                         <ThemeIcon
                             size={60}

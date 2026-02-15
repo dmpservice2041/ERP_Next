@@ -14,7 +14,7 @@ function ResetConfirmContent() {
 
     useEffect(() => {
         const t = searchParams.get('token');
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        
         setToken(t);
     }, [searchParams]);
 

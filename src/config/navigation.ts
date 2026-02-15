@@ -14,10 +14,10 @@ import {
 
 export interface NavItem {
     label: string;
-    link?: string; // Optional for parent items
+    link?: string; 
     icon: React.ComponentType<{ size?: number; stroke?: number }>;
     permission?: string;
-    links?: NavItem[]; // For nested items
+    links?: NavItem[]; 
     initiallyOpened?: boolean;
 }
 
@@ -30,7 +30,7 @@ export const MENU_ITEMS: NavItem[] = [
     {
         label: 'Academic Setup',
         icon: IconSchool,
-        permission: 'academic_sessions.read', // Parent permission check
+        permission: 'academic_sessions.read', 
         links: [
             {
                 label: 'Academic Sessions',

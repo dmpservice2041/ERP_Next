@@ -138,7 +138,7 @@ export function Sidebar({ user }: SidebarProps) {
                 borderRight: '1px solid var(--mantine-color-gray-2)',
             }}
         >
-            {/* Brand Section */}
+            { }
             <AppShell.Section mb="xl">
                 <Group gap="xs" px="xs">
                     <ThemeIcon
@@ -156,7 +156,7 @@ export function Sidebar({ user }: SidebarProps) {
                 </Group>
             </AppShell.Section>
 
-            {/* Navigation Sections */}
+            { }
             <AppShell.Section grow component={ScrollArea} scrollbarSize={6}>
                 <Stack gap={4}>
                     {MENU_ITEMS.map((item) => (
@@ -165,7 +165,7 @@ export function Sidebar({ user }: SidebarProps) {
                 </Stack>
             </AppShell.Section>
 
-            {/* User Info at Bottom */}
+            { }
             <AppShell.Section>
                 <Divider my="sm" />
                 <UnstyledButton
