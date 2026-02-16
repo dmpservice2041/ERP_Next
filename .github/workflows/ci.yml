@@ -14,6 +14,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'
 
       - run: npm install
+
+      # Temporary dummy env for build
+      - run: |
+          echo "NEXT_PUBLIC_APP_URL=http://localhost:3000" >> .env
+          echo "NEXT_PUBLIC_API_URL=http://localhost:3000/api" >> .env
+
       - run: npm run build
